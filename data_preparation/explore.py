@@ -201,4 +201,8 @@ ceiling_sellers = sfi_df[(sfi_df["delay_surge"] >= 1.0) & (sfi_df["recent_volume
 print("Sellers at delay_surge ceiling:", len(ceiling_sellers))
 print(ceiling_sellers[["baseline_delay", "recent_delay"]].describe())
 
+ceiling_sellers = ceiling_sellers.copy()
+ceiling_sellers["absolute_delay_increase"] = ceiling_sellers["recent_delay"] - ceiling_sellers["baseline_delay"]
+print(ceiling_sellers["absolute_delay_increase"].describe())
+
 
