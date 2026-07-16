@@ -103,3 +103,37 @@ seller_order_counts = baseline_dedup.groupby("seller_id").size()
 
 print("\nUnique sellers in baseline:", baseline_dedup["seller_id"].nunique())
 print(seller_order_counts.describe())
+
+
+#Validating the discrepancy in the unique seller count through SQL an python
+print(orders.shape[0])       # should be 99441
+print(order_items.shape[0])  # should be 112650
+
+print(orders["order_id"].duplicated().sum()) #Checking the duplicates in the orders dataset, should be 0
+
+
+print(order_items["seller_id"].nunique())
+print(order_items["seller_id"].str.strip().nunique())  # checking for whitespace issues
+
+#Checking the number of orders in the baseline window using a direct filter on the orders dataframe, without joining to order_items
+count = orders[
+    (orders["order_purchase_timestamp"] >= "2017-04-01") &
+    (orders["order_purchase_timestamp"] < "2018-01-01")
+].shape[0]
+print("Orders in baseline window (Python, no join):", count)
+
+
+#Checking the data timestamps as the issue lies in the count of baeline order. 
+#SQL says that there are 39839 order in that time period but python says that there are 37719 orders
+
+print(orders["order_purchase_timestamp"].min(), orders["order_purchase_timestamp"].max())
+
+#Changing the timestamp format to a more standard format to see if that resolves the discrepancy
+orders["order_purchase_timestamp"] = pd.to_datetime(orders["order_purchase_timestamp"])
+
+count = orders[
+    (orders["order_purchase_timestamp"] >= "2017-04-01") &
+    (orders["order_purchase_timestamp"] < "2018-01-01")
+].shape[0]
+print("Orders in baseline window (Python):", count)
+
