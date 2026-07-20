@@ -52,7 +52,7 @@ orders["order_purchase_timestamp"] = pd.to_datetime(
     errors="coerce"
 )
 
-# 2. Join orders -> order_items to get seller_id per order
+'''# 2. Join orders -> order_items to get seller_id per order
 orders_sellers = order_items.merge(orders, on="order_id", how="left")
 
 # 3. Filtering data to the baseline window
@@ -83,10 +83,10 @@ print("\n" + "=" * 60)
 print("ORDERS-PER-SELLER DISTRIBUTION (baseline window)")
 print("=" * 60)
 print(seller_order_counts.describe())
-'''order_items.merge(orders, on="order_id"). order_items has one row per line-item, not per order. 
+''''''order_items.merge(orders, on="order_id"). order_items has one row per line-item, not per order. 
 If a customer buys 3 different products from the same seller in a single order, that's 3 rows in order_items for 1 actual order. 
 When we then do baseline.groupby("seller_id").size(), we're counting line items sold, not orders fulfilled.
-If we want to count actual orders per seller, we need to drop duplicates of order_id before grouping by seller_id.'''
+If we want to count actual orders per seller, we need to drop duplicates of order_id before grouping by seller_id.''''''
 
 # Deduplicate order-item rows to get unique order-seller pairs
 orders_sellers_dedup = orders_sellers.drop_duplicates(subset=["order_id", "seller_id"])
@@ -135,5 +135,27 @@ count = orders[
     (orders["order_purchase_timestamp"] >= "2017-04-01") &
     (orders["order_purchase_timestamp"] < "2018-01-01")
 ].shape[0]
-print("Orders in baseline window (Python):", count)
+print("Orders in baseline window (Python):", count)'''
+
+
+orders_sellers = order_items.merge(orders, on="order_id", how="left")
+orders_sellers_dedup = orders_sellers.drop_duplicates(subset=["order_id", "seller_id"])
+
+BASELINE_START = "2017-04-01"
+BASELINE_END = "2018-01-01"
+
+baseline = orders_sellers_dedup[
+    (orders_sellers_dedup["order_purchase_timestamp"] >= BASELINE_START) &
+    (orders_sellers_dedup["order_purchase_timestamp"] < BASELINE_END)
+]
+
+seller_order_counts = baseline.groupby("seller_id").size()
+
+print("Unique sellers in baseline:", baseline["seller_id"].nunique())
+print(seller_order_counts.describe())
+
+MIN_BASELINE_ORDERS = 5
+eligible_sellers = seller_order_counts[seller_order_counts >= MIN_BASELINE_ORDERS].index
+print("\nEligible sellers (>=5 orders):", len(eligible_sellers))
+print("% retained:", round(100 * len(eligible_sellers) / len(seller_order_counts), 1))
 

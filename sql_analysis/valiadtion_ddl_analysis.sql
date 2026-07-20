@@ -53,3 +53,9 @@ SELECT COUNT(DISTINCT TRIM(seller_id)) FROM order_items;
 SELECT COUNT(*) FROM orders
 WHERE order_purchase_timestamp >= '2017-04-01'
   AND order_purchase_timestamp < '2018-01-01';
+
+
+SELECT column_name, data_type FROM information_schema.columns
+WHERE table_name = 'orders' AND column_name = 'order_purchase_timestamp';
+
+SELECT MIN(order_purchase_timestamp), MAX(order_purchase_timestamp) FROM orders;
