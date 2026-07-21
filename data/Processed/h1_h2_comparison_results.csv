@@ -1,0 +1,5 @@
+metric,mean_became_inactive,mean_stayed_active,median_became_inactive,median_stayed_active,mannwhitney_pvalue,significant_at_0.05
+SFI,0.3249,0.1652,0.3106,0.1059,0.0,True
+volume_decay,0.3811,0.1443,0.4,0.0,0.0,True
+review_decay,0.1723,0.0999,0.0,0.0559,0.5703,False
+delay_surge,0.3973,0.23,0.2184,0.0488,0.00088,True

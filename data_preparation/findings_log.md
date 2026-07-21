@@ -79,5 +79,20 @@ High (0.35-1.0)         139
 
 There are total 15.5% sellers i.e Around 139 sellers out of 897 are showing in high risk category according to SFI index.
 
+Step 7 - 
+160 of the 190 sellers stayed inactive who had already zero orders in the recent window — which makes sense, sellers already gone tend to stay gone.
+30 of those 190 actually came back — a real, interesting finding on its own: Sellers who had zero orders in recent window isn't always permanent, some sellers have gaps and return. This could be the limitation of only volume based churn prediction.
+
+92 sellers were genuinely active and had orders in recent window but became fully inactive afterward. This is the critical number — 13% of previously-active sellers went from "looks fine" to "gone" within 
+6.5 months, with no obvious signal from raw activity alone at the snapshot date.
+
+Step 8: Direct H1/H2 comparison test
+Metric	Mean (became inactive)	Mean (stayed active)	p-value	Significant?
+SFI (composite)	0.325	0.165	<0.00001	Yes
+Volume decay	0.381	0.144	<0.00001	Yes
+Review decay	0.172	0.100	0.570	No
+Delay surge	0.397	0.230	0.00088	Yes
 
 
+H2 is supported: the composite SFI score is significantly higher for sellers who later became inactive, even though both groups looked "active" at the snapshot date. This is real evidence the score has predictive, not just descriptive, value.
+H1 is only partially supported: volume decay and delay surge are both strong, significant early-warning signals — sellers were already slowing down and shipping slower before going fully inactive. Review decay is NOT a significant discriminator in this dataset — this contradicts the original "reviews dropping predicts decline" framing and is an honest, important nuance rather than a clean confirmation of all three signals.

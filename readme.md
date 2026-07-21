@@ -104,5 +104,4 @@ pip install pandas numpy matplotlib pyarrow jupyter sqlalchemy scikit-learn
 Nearly every public churn-analysis portfolio project analyzes the customer side of a business. This project instead treats the **seller/supply side** of a marketplace as the at-risk population — a genuinely underexplored angle grounded in two-sided market theory and a small, scattered prior literature (see `literature_review.md`). The methodology (a multi-signal friction composite + leakage-safe predictive modeling) is also designed to generalize: any marketplace tracking order volume, review scores, and fulfillment timestamps per seller could retrain this approach on their own data.
 
 ## Author
-
 Akshay Rane
